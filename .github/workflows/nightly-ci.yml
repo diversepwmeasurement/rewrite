@@ -1,20 +1,16 @@
----
-name: nightly-ci
-
-on:
-  schedule:
-    - cron: 0 16 * * *
-
 concurrency:
-  group: ci-${{ github.ref }}
   cancel-in-progress: true
-
+  group: ci-${{ github.ref }}
 jobs:
   build:
-    uses: openrewrite/gh-automation/.github/workflows/ci-gradle.yml@main
     secrets:
       gradle_enterprise_access_key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
-      ossrh_token: ${{ secrets.OSSRH_TOKEN }}
       ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
       ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
+      ossrh_token: ${{ secrets.OSSRH_TOKEN }}
+      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
+    uses: openrewrite/gh-automation/.github/workflows/ci-gradle.yml@main
+name: nightly-ci
+on:
+  repository_dispatch:
+    types: trigger-ga___nightly-ci.yml
